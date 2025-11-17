@@ -102,8 +102,7 @@ class FlowPlanner(DiffusionADPlanner):
         return encoder_inputs
     
     def extract_decoder_inputs(self, encoder_outputs, inputs):
-        model_extra = dict(neighbor_current_mask=inputs['neighbor_current_mask'],
-                           cfg_flags=inputs['cfg_flags'] if 'cfg_flags' in inputs.keys() else None,)
+        model_extra = dict(cfg_flags=inputs['cfg_flags'] if 'cfg_flags' in inputs.keys() else None,)
         model_extra.update(encoder_outputs)
         return model_extra
     
@@ -151,12 +150,10 @@ class FlowPlanner(DiffusionADPlanner):
         prediction = self.decoder(noised_traj_tokens, t, **decoder_model_extra)
         
         loss_dict = {}
-        
         batch_loss = self.basic_loss(prediction, target_tokens)
         loss_dict['batch_loss'] = batch_loss
         
         loss = torch.sum(batch_loss, dim=-1) # (B, action_num, action_length, dim)
-        loss_dict['neighbor_pred_loss'] = torch.tensor(0.0, device=loss.device)
         loss_dict['ego_planning_loss'] = loss.mean()
 
         if self.planner_params['action_overlap'] > 0: # TODO:

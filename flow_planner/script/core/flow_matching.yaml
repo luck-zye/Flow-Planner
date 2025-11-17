@@ -11,5 +11,4 @@ input_aug:
   device: ${device}
 
 ego_planning_loss: 1.0
-neighbor_pred_loss: 0.0
 consistency_loss: 0.5
