@@ -1,4 +1,3 @@
-
 import warnings
 import torch
 import numpy as np
@@ -98,7 +97,7 @@ class FlowPlanner(AbstractPlanner):
                     state_dict = state_dict['model']
             # use for ddp
             model_state_dict = {k[len("module."):]: v for k, v in state_dict.items() if k.startswith("module.")}
-            self._planner.load_state_dict(model_state_dict)
+            self._planner.load_state_dict(model_state_dict, strict=False)
         else:
             print("load random model")
         

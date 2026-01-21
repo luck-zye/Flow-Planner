@@ -5,29 +5,29 @@ export HYDRA_FULL_ERROR=1
 # User Configuration Section
 ###################################
 # Set environment variables
-export NUPLAN_DEVKIT_ROOT= # nuplan-devkit absolute path (e.g., "/home/user/nuplan-devkit")
-export NUPLAN_DATA_ROOT= # nuplan dataset absolute path (e.g. "/data")
-export NUPLAN_MAPS_ROOT= # nuplan maps absolute path (e.g. "/data/nuplan-v1.1/maps")
-export NUPLAN_EXP_ROOT= # nuplan experiment absolute path (e.g. "/data/nuplan-v1.1/exp")
-
+export NUPLAN_DEVKIT_ROOT="/home/eivvic/code/zhangye/nuplan-devkit"  # nuplan-devkit absolute path (e.g., "/home/user/nuplan-devkit")
+export NUPLAN_DATA_ROOT="/home/eivvic/data3/nuplan/dataset"  # nuplan dataset absolute path (e.g. "/data")
+export NUPLAN_MAPS_ROOT="/home/eivvic/data3/nuplan/dataset/maps" # nuplan maps absolute path (e.g. "/data/nuplan-v1.1/maps")
+export NUPLAN_EXP_ROOT="/home/eivvic/data3/nuplan/exp" # nuplan experiment absolute path (e.g. "/data/nuplan-v1.1/exp")
+export PYTHONPATH="${NUPLAN_DEVKIT_ROOT}:${PYTHONPATH}:$(pwd)"
 # Dataset split to use
 # Options: 
 #   - "test14-random"
 #   - "test14-hard"
 #   - "val14"
-SPLIT=  # e.g., "val14"
+SPLIT="val14" # e.g., "val14"
 
 # Challenge type
 # Options: 
 #   - "closed_loop_nonreactive_agents"
 #   - "closed_loop_reactive_agents"
-CHALLENGE= # e.g., "closed_loop_nonreactive_agents"
+CHALLENGE="closed_loop_nonreactive_agents" # e.g., "closed_loop_nonreactive_agents"
 ###################################
 
 
 BRANCH_NAME=flow_planner_release
-CONFIG_FILE= # path of .hydra/config in ckpt folder
-CKPT_FILE= # path to the .pth of checkpoint
+CONFIG_FILE="/home/eivvic/code/zhangye/Flow-Planner/output/outputs/FlowPlannerTraining/flow_planner_standard/2026-01-19_21-43-05/.hydra/config.yaml" # path of .hydra/config in ckpt folder
+CKPT_FILE="/home/eivvic/code/zhangye/Flow-Planner/output/outputs/FlowPlannerTraining/flow_planner_standard/2026-01-19_21-43-05/module.pth" # path to the .pth of checkpoint
 
 if [ "$SPLIT" == "val14" ]; then
     SCENARIO_BUILDER="nuplan"
@@ -46,6 +46,7 @@ python $NUPLAN_DEVKIT_ROOT/nuplan/planning/script/run_simulation.py \
     planner.flow_planner.config_path=$CONFIG_FILE \
     planner.flow_planner.ckpt_path=$CKPT_FILE \
     scenario_builder=$SCENARIO_BUILDER \
+    scenario_builder.data_root=${NUPLAN_DATA_ROOT}/nuplan-v1.1/splits/val \
     scenario_filter=$SPLIT \
     experiment_uid=$PLANNER/$SPLIT/$BRANCH_NAME/${FILENAME_WITHOUT_EXTENSION}_$(date "+%Y-%m-%d-%H-%M-%S") \
     verbose=true \

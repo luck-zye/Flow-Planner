@@ -19,9 +19,9 @@ use_wandb: false
 pin_mem: true
 
 train:
-  batch_size: 2048
-  epoch: 400
-  save_utd: 20
+  batch_size: 512
+  epoch: 40
+  save_utd: 10
 
 ddp:
   distributed: true
