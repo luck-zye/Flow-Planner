@@ -6,3 +6,7 @@ huge_file.iso
 output/
 # 忽略所有.pyc文件
 *.pyc
+# 忽略训练日志文件
+train.log/
+# 忽略gitignore文件本身
+.gitignore
